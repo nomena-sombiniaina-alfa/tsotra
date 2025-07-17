@@ -1,11 +1,17 @@
 from django.contrib.auth import get_user_model
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, mixins, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import RecruiterRegisterSerializer, RecruiterSerializer
+from .models import Offer
+from .serializers import (
+    OfferPublicSerializer,
+    RecruiterRegisterSerializer,
+    RecruiterSerializer,
+)
 
 Recruiter = get_user_model()
 
@@ -33,3 +39,18 @@ class MeView(APIView):
 
     def get(self, request):
         return Response(RecruiterSerializer(request.user).data)
+
+
+class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
+                         viewsets.GenericViewSet):
+    """Lecture publique des offres publiées."""
+
+    serializer_class = OfferPublicSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['type', 'domain', 'mode', 'experience_required']
+    search_fields = ['title', 'description_short', 'description_full', 'domain', 'location']
+    ordering_fields = ['created_at']
+
+    def get_queryset(self):
+        return Offer.objects.filter(status=Offer.Status.PUBLISHED).select_related('recruiter')
