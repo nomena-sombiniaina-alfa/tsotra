@@ -45,3 +45,19 @@ class OfferPublicSerializer(serializers.ModelSerializer):
             'status', 'created_at',
         )
         read_only_fields = fields
+
+
+class OfferDraftSerializer(serializers.ModelSerializer):
+    """Étape 1 — création d'un brouillon avant inscription."""
+
+    class Meta:
+        model = Offer
+        fields = (
+            'id', 'title', 'type', 'domain',
+            'description_short', 'location',
+        )
+
+    def validate_type(self, value):
+        if value not in (Offer.Type.INTERNSHIP, Offer.Type.VOLUNTEER):
+            raise serializers.ValidationError("Type invalide.")
+        return value

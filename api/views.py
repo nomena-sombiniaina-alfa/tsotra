@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Offer
 from .serializers import (
+    OfferDraftSerializer,
     OfferPublicSerializer,
     RecruiterRegisterSerializer,
     RecruiterSerializer,
@@ -54,3 +55,14 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         return Offer.objects.filter(status=Offer.Status.PUBLISHED).select_related('recruiter')
+
+
+class OfferDraftView(APIView):
+    """Étape 1 — validation des champs initiaux avant inscription."""
+
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = OfferDraftSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)

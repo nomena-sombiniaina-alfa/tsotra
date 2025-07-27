@@ -12,5 +12,6 @@ urlpatterns = [
     path('auth/login/', TokenObtainPairView.as_view(), name='login'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='refresh'),
     path('me/', views.MeView.as_view(), name='me'),
+    path('offers/draft/', views.OfferDraftView.as_view(), name='offer-draft'),
     path('', include(router.urls)),
 ]
