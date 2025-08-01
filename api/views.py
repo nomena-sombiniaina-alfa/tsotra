@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Offer
 from .serializers import (
+    ApplicationCreateSerializer,
     OfferDraftSerializer,
     OfferPublicSerializer,
     RecruiterRegisterSerializer,
@@ -55,6 +58,18 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         return Offer.objects.filter(status=Offer.Status.PUBLISHED).select_related('recruiter')
+
+    @action(detail=True, methods=['post'], url_path='apply',
+            serializer_class=ApplicationCreateSerializer)
+    def apply(self, request, pk=None):
+        offer = get_object_or_404(Offer, pk=pk, status=Offer.Status.PUBLISHED)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        application = serializer.save(offer=offer)
+        return Response(
+            ApplicationCreateSerializer(application).data,
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class OfferDraftView(APIView):

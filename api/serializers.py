@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import Offer
+from .models import Application, Offer
 
 Recruiter = get_user_model()
 
@@ -61,3 +61,10 @@ class OfferDraftSerializer(serializers.ModelSerializer):
         if value not in (Offer.Type.INTERNSHIP, Offer.Type.VOLUNTEER):
             raise serializers.ValidationError("Type invalide.")
         return value
+
+
+class ApplicationCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = ('id', 'email', 'message', 'cv', 'created_at')
+        read_only_fields = ('id', 'created_at')
