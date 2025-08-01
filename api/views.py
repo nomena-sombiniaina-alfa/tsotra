@@ -13,9 +13,11 @@ from .serializers import (
     ApplicationCreateSerializer,
     OfferDraftSerializer,
     OfferPublicSerializer,
+    OfferWriteSerializer,
     RecruiterRegisterSerializer,
     RecruiterSerializer,
 )
+from .throttling import check_application_rate_limits
 
 Recruiter = get_user_model()
 
@@ -65,6 +67,12 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         offer = get_object_or_404(Offer, pk=pk, status=Offer.Status.PUBLISHED)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data['email']
+        error = check_application_rate_limits(email=email, offer_id=offer.pk)
+        if error:
+            return Response({'detail': error}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
         application = serializer.save(offer=offer)
         return Response(
             ApplicationCreateSerializer(application).data,
@@ -81,3 +89,16 @@ class OfferDraftView(APIView):
         serializer = OfferDraftSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+
+class MyOfferViewSet(viewsets.ModelViewSet):
+    """Dashboard recruteur — CRUD sur ses propres offres."""
+
+    serializer_class = OfferWriteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Offer.objects.filter(recruiter=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(recruiter=self.request.user)

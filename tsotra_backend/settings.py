@@ -113,3 +113,12 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@tsotra.local'
+
+
+TSOTRA_APPLICATION_RATE_LIMIT_PER_OFFER_HOURS = 24
+TSOTRA_APPLICATION_GLOBAL_LIMIT = 5
+TSOTRA_APPLICATION_GLOBAL_WINDOW_HOURS = 24
