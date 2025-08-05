@@ -63,8 +63,35 @@ class OfferDraftSerializer(serializers.ModelSerializer):
         return value
 
 
+class OfferWriteSerializer(serializers.ModelSerializer):
+    """Étape 3 — complétion de l'offre par le recruteur connecté."""
+
+    class Meta:
+        model = Offer
+        fields = (
+            'id', 'title', 'type', 'domain',
+            'description_short', 'description_full', 'tasks', 'requirements',
+            'experience_required', 'experience_justification',
+            'duration', 'location', 'mode', 'contact_method', 'status',
+            'created_at', 'updated_at',
+        )
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+
 class ApplicationCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ('id', 'email', 'message', 'cv', 'created_at')
         read_only_fields = ('id', 'created_at')
+
+
+class ApplicationDashboardSerializer(serializers.ModelSerializer):
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = Application
+        fields = (
+            'id', 'offer', 'email', 'message', 'cv',
+            'status', 'status_display', 'created_at',
+        )
+        read_only_fields = ('id', 'offer', 'email', 'message', 'cv', 'created_at')

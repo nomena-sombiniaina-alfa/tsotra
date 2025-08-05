@@ -8,9 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Offer
+from .models import Application, Offer
+from .permissions import IsApplicationOfferOwner, IsOfferOwner
 from .serializers import (
     ApplicationCreateSerializer,
+    ApplicationDashboardSerializer,
     OfferDraftSerializer,
     OfferPublicSerializer,
     OfferWriteSerializer,
@@ -95,10 +97,52 @@ class MyOfferViewSet(viewsets.ModelViewSet):
     """Dashboard recruteur — CRUD sur ses propres offres."""
 
     serializer_class = OfferWriteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOfferOwner]
 
     def get_queryset(self):
         return Offer.objects.filter(recruiter=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(recruiter=self.request.user)
+
+    @action(detail=True, methods=['get'], url_path='applications',
+            serializer_class=ApplicationDashboardSerializer)
+    def applications(self, request, pk=None):
+        offer = self.get_object()
+        qs = offer.applications.all()
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(self.get_serializer(qs, many=True).data)
+
+
+class MyApplicationsView(APIView):
+    """Toutes les candidatures sur les offres du recruteur connecté."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        qs = Application.objects.filter(
+            offer__recruiter=request.user
+        ).select_related('offer')
+        return Response(ApplicationDashboardSerializer(qs, many=True).data)
+
+
+class ApplicationStatusView(APIView):
+    """PATCH /api/applications/<id>/ — change le statut (recruteur propriétaire)."""
+
+    permission_classes = [IsAuthenticated, IsApplicationOfferOwner]
+
+    def patch(self, request, pk):
+        application = get_object_or_404(Application, pk=pk)
+        self.check_object_permissions(request, application)
+        new_status = request.data.get('status')
+        if new_status not in dict(Application.Status.choices):
+            return Response(
+                {'detail': 'Statut invalide.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        application.status = new_status
+        application.save(update_fields=['status'])
+        return Response(ApplicationDashboardSerializer(application).data)
