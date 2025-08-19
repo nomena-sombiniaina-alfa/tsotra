@@ -1,3 +1,13 @@
+"""URL routes for the tsotra API.
+
+Public endpoints (no auth):
+    /auth/register/  /auth/login/  /auth/refresh/
+    /offers/  /offers/<id>/  /offers/<id>/apply/  /offers/draft/
+
+Recruiter endpoints (JWT required):
+    /me/  /me/offers/  /me/offers/<id>/applications/
+    /me/applications/  /applications/<id>/   (PATCH status: new/viewed/archived)
+"""
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
