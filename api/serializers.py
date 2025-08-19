@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import Application, Offer
+from .models import Application, Offer, OfferReport
 
 Recruiter = get_user_model()
 
@@ -122,3 +122,10 @@ class ApplicationDashboardSerializer(serializers.ModelSerializer):
             'status', 'status_display', 'created_at',
         )
         read_only_fields = ('id', 'offer', 'email', 'message', 'cv', 'created_at')
+
+
+class OfferReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OfferReport
+        fields = ('id', 'offer', 'reporter_email', 'reason', 'created_at')
+        read_only_fields = ('id', 'offer', 'created_at')

@@ -9,13 +9,14 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .emails import notify_recruiter_of_application
-from .models import Application, Offer
+from .models import Application, Offer, OfferReport
 from .permissions import IsApplicationOfferOwner, IsOfferOwner
 from .serializers import (
     ApplicationCreateSerializer,
     ApplicationDashboardSerializer,
     OfferDraftSerializer,
     OfferPublicSerializer,
+    OfferReportSerializer,
     OfferWriteSerializer,
     RecruiterRegisterSerializer,
     RecruiterSerializer,
@@ -67,7 +68,9 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
     @action(detail=True, methods=['post'], url_path='apply',
             serializer_class=ApplicationCreateSerializer)
     def apply(self, request, pk=None):
-        offer = get_object_or_404(Offer, pk=pk, status=Offer.Status.PUBLISHED)
+        offer = get_object_or_404(
+            Offer, pk=pk, status=Offer.Status.PUBLISHED
+        )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -83,9 +86,26 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
             status=status.HTTP_201_CREATED,
         )
 
+    @action(detail=True, methods=['post'], url_path='report',
+            serializer_class=OfferReportSerializer)
+    def report(self, request, pk=None):
+        offer = get_object_or_404(Offer, pk=pk)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        report = serializer.save(offer=offer)
+        Offer.objects.filter(pk=offer.pk).update(report_count=offer.report_count + 1)
+        return Response(
+            OfferReportSerializer(report).data,
+            status=status.HTTP_201_CREATED,
+        )
+
 
 class OfferDraftView(APIView):
-    """Étape 1 — validation des champs initiaux avant inscription."""
+    """Étape 1 — validation des champs initiaux avant inscription.
+
+    Le client conserve ce brouillon côté frontend (localStorage),
+    puis l'envoie via POST /me/offers/ une fois authentifié.
+    """
 
     permission_classes = [AllowAny]
 
