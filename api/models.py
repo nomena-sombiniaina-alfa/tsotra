@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -77,6 +78,16 @@ class Offer(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.get_type_display()})"
+
+    def clean(self):
+        super().clean()
+        if self.experience_required and self.experience_required > 0:
+            if not (self.experience_justification and self.experience_justification.strip()):
+                raise ValidationError({
+                    'experience_justification': (
+                        "Une justification est obligatoire dès que de l'expérience est requise."
+                    )
+                })
 
 
 class Application(models.Model):
