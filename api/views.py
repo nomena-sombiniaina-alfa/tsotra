@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .emails import notify_recruiter_of_application
 from .models import Application, Offer
 from .permissions import IsApplicationOfferOwner, IsOfferOwner
 from .serializers import (
@@ -76,6 +77,7 @@ class PublicOfferViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
             return Response({'detail': error}, status=status.HTTP_429_TOO_MANY_REQUESTS)
 
         application = serializer.save(offer=offer)
+        notify_recruiter_of_application(application)
         return Response(
             ApplicationCreateSerializer(application).data,
             status=status.HTTP_201_CREATED,
