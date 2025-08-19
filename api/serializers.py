@@ -77,6 +77,33 @@ class OfferWriteSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id', 'created_at', 'updated_at')
 
+    def validate(self, attrs):
+        exp = attrs.get(
+            'experience_required',
+            getattr(self.instance, 'experience_required', 0),
+        )
+        justification = attrs.get(
+            'experience_justification',
+            getattr(self.instance, 'experience_justification', ''),
+        )
+        if exp and exp > 0 and not (justification and justification.strip()):
+            raise serializers.ValidationError({
+                'experience_justification': (
+                    "Justification obligatoire dès que de l'expérience est requise."
+                )
+            })
+        if attrs.get('status') == Offer.Status.PUBLISHED:
+            required = ['description_full', 'tasks', 'requirements', 'contact_method']
+            missing = [
+                f for f in required
+                if not (attrs.get(f) or getattr(self.instance, f, None))
+            ]
+            if missing:
+                raise serializers.ValidationError({
+                    f: "Champ requis pour publier." for f in missing
+                })
+        return attrs
+
 
 class ApplicationCreateSerializer(serializers.ModelSerializer):
     class Meta:

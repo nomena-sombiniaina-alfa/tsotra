@@ -8,3 +8,10 @@ class IsOfferOwner(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.recruiter_id == getattr(request.user, 'id', None)
+
+
+class IsApplicationOfferOwner(permissions.BasePermission):
+    """Seul le recruteur propriétaire de l'offre voit/édite la candidature."""
+
+    def has_object_permission(self, request, view, obj):
+        return obj.offer.recruiter_id == getattr(request.user, 'id', None)
