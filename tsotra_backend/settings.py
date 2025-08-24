@@ -1,17 +1,25 @@
 """
 Django settings for tsotra_backend project.
+
+Plateforme tsotra — stages non rémunérés et volontariat structuré.
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
+from decouple import Csv, config
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-i89mj5xb(934-vgonp6$=08stgzue!$9@7!zsm8b#02-w63a08'
+SECRET_KEY = config(
+    'DJANGO_SECRET_KEY',
+    default='django-insecure-i89mj5xb(934-vgonp6$=08stgzue!$9@7!zsm8b#02-w63a08',
+)
 
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='*', cast=Csv())
 
 
 INSTALLED_APPS = [
@@ -24,12 +32,14 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'django_filters',
 
     'api',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -115,8 +125,19 @@ SIMPLE_JWT = {
 }
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'no-reply@tsotra.local'
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS',
+    default='http://localhost:5173,http://127.0.0.1:5173',
+    cast=Csv(),
+)
+CORS_ALLOW_CREDENTIALS = True
+
+
+EMAIL_BACKEND = config(
+    'EMAIL_BACKEND',
+    default='django.core.mail.backends.console.EmailBackend',
+)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='no-reply@tsotra.local')
 
 
 TSOTRA_APPLICATION_RATE_LIMIT_PER_OFFER_HOURS = 24
