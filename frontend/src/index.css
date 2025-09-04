@@ -55,3 +55,33 @@ h1 { font-size: 2.5rem; }
 .hero h1 { max-width: 18ch; }
 .lead { color: var(--muted); font-size: 1.1rem; max-width: 60ch; margin-bottom: 2em; }
 .ctas { display: flex; gap: 0.6em; flex-wrap: wrap; }
+
+.section { padding: 3rem 0; }
+.kicker { color: var(--accent); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.6em; }
+.toolbar {
+  display: flex; gap: 0.6em; flex-wrap: wrap;
+  margin-bottom: 1.5em;
+  padding: 1em;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.toolbar select, .toolbar input {
+  padding: 0.5em 0.8em;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.toolbar input { flex: 1; min-width: 220px; }
+.offers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; }
+@media (max-width: 720px) { .offers-grid { grid-template-columns: 1fr; } }
+.offer-card { display: block; text-decoration: none; color: inherit; padding: 1.5em; background: #fafafa; border: 1px solid var(--border); border-radius: 14px; transition: all 0.15s; }
+.offer-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.offer-card h3 { color: var(--primary); margin-bottom: 0.2em; }
+.offer-card .org { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5em; }
+.offer-card .meta { display: flex; gap: 0.4em; flex-wrap: wrap; margin-bottom: 0.6em; }
+.badge { display: inline-block; padding: 0.2em 0.7em; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+.badge-internship { background: #e1ebff; color: #2849a8; }
+.badge-volunteer  { background: #d8f2e6; color: #0f7a4f; }
+.badge-mode       { background: #f1f5f9; color: #475569; }
+.empty { padding: 3em; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: 12px; }
