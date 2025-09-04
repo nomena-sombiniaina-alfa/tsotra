@@ -1,34 +1,57 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg: #ffffff;
+  --text: #0a1224;
+  --muted: #4b5563;
+  --border: #e5e7eb;
+  --primary: #0f1f4a;
+  --accent: #ff6a3d;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+  background: var(--bg);
 }
 
-a { font-weight: 500; color: #646cff; text-decoration: inherit; }
-a:hover { color: #535bf2; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-body { margin: 0; display: flex; place-items: center; min-width: 320px; min-height: 100vh; }
+h1, h2, h3 { color: var(--text); margin: 0 0 0.5em; line-height: 1.15; }
+h1 { font-size: 2.5rem; }
 
-h1 { font-size: 3.2em; line-height: 1.1; }
+.container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-button {
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  padding: 0.7em 1.2em;
   border-radius: 8px; border: 1px solid transparent;
-  padding: 0.6em 1.2em; font-size: 1em; font-weight: 500;
-  font-family: inherit; background-color: #1a1a1a; cursor: pointer;
-  transition: border-color 0.25s;
+  font-weight: 600; cursor: pointer;
+  text-decoration: none;
 }
-button:hover { border-color: #646cff; }
-button:focus, button:focus-visible { outline: 4px auto -webkit-focus-ring-color; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 
-@media (prefers-color-scheme: light) {
-  :root { color: #213547; background-color: #ffffff; }
-  a:hover { color: #747bff; }
-  button { background-color: #f9f9f9; }
+.site-header {
+  position: sticky; top: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
+.site-header .inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.brand { font-weight: 700; font-size: 1.25rem; color: var(--primary); }
+.nav { display: flex; gap: 1em; }
+.nav a { color: var(--muted); }
+
+.site-footer {
+  margin-top: 4rem; padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 0.9rem;
+}
+
+.hero { padding: 4rem 0; }
+.hero h1 { max-width: 18ch; }
+.lead { color: var(--muted); font-size: 1.1rem; max-width: 60ch; margin-bottom: 2em; }
+.ctas { display: flex; gap: 0.6em; flex-wrap: wrap; }
