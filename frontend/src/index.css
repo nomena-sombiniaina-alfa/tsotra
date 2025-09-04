@@ -85,3 +85,17 @@ h1 { font-size: 2.5rem; }
 .badge-volunteer  { background: #d8f2e6; color: #0f7a4f; }
 .badge-mode       { background: #f1f5f9; color: #475569; }
 .empty { padding: 3em; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: 12px; }
+
+.detail-header { padding: 2.5rem 0 1rem; }
+.detail-header h1 { font-size: 2rem; margin-bottom: 0.3em; }
+.detail-grid { display: grid; grid-template-columns: 1fr 360px; gap: 2.5em; align-items: start; padding-bottom: 4rem; }
+@media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; } }
+.apply-box { position: sticky; top: 88px; padding: 1.5em; background: #f8fafc; border: 1px solid var(--border); border-radius: 14px; }
+.apply-box h3 { color: var(--primary); margin-bottom: 0.4em; }
+.field { display: flex; flex-direction: column; gap: 0.4em; margin-bottom: 1em; }
+.field label { font-weight: 600; font-size: 0.9rem; }
+.field input, .field textarea { padding: 0.6em 0.8em; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+.field textarea { min-height: 100px; resize: vertical; }
+.alert { padding: 0.8em 1em; border-radius: 8px; margin-bottom: 1em; }
+.alert-success { background: #d8f2e6; color: #0f7a4f; }
+.alert-error   { background: #fde2dc; color: #b3121f; }
