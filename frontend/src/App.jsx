@@ -3,6 +3,8 @@ import Layout from './components/Layout.jsx'
 import Home from './pages/Home.jsx'
 import Offers from './pages/Offers.jsx'
 import OfferDetail from './pages/OfferDetail.jsx'
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/offers/:id" element={<OfferDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </BrowserRouter>
