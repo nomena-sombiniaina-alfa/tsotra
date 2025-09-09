@@ -105,3 +105,9 @@ h1 { font-size: 2.5rem; }
 .auth-card .sub { color: var(--muted); margin-bottom: 1.5em; }
 .auth-card .switch { margin-top: 1.2em; font-size: 0.9rem; color: var(--muted); text-align: center; }
 .btn-block { width: 100%; justify-content: center; }
+
+.steps { display: inline-flex; align-items: center; gap: 0.5em; margin-bottom: 1em; font-size: 0.85rem; color: var(--muted); }
+.steps .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+.steps .dot.active { background: var(--accent); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; }
+@media (max-width: 600px) { .row { grid-template-columns: 1fr; } }

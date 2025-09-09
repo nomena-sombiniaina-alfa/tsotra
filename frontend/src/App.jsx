@@ -5,6 +5,7 @@ import Offers from './pages/Offers.jsx'
 import OfferDetail from './pages/OfferDetail.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import PublishOffer from './pages/PublishOffer.jsx'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/offers/:id" element={<OfferDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/publish" element={<PublishOffer />} />
         </Route>
       </Routes>
     </BrowserRouter>
