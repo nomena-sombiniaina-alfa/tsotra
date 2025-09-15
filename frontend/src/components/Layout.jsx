@@ -1,6 +1,16 @@
-import { Outlet, Link, NavLink } from 'react-router-dom'
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom'
+import { auth } from '../api.js'
+import ThemeToggle from './ThemeToggle.jsx'
 
 export default function Layout() {
+  const navigate = useNavigate()
+  const logged = auth.isLogged()
+
+  function logout() {
+    auth.clear()
+    navigate('/')
+  }
+
   return (
     <>
       <header className="site-header">
@@ -9,6 +19,15 @@ export default function Layout() {
           <nav className="nav" aria-label="Navigation principale">
             <NavLink to="/offers">Missions</NavLink>
             <NavLink to="/publish">Publier</NavLink>
+            {logged ? (
+              <>
+                <NavLink to="/dashboard">Mon espace</NavLink>
+                <button className="btn btn-ghost btn-sm" onClick={logout}>Déconnexion</button>
+              </>
+            ) : (
+              <NavLink to="/login">Connexion</NavLink>
+            )}
+            <ThemeToggle />
           </nav>
         </div>
       </header>
