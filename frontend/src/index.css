@@ -121,3 +121,9 @@ h1 { font-size: 2.5rem; }
 .pill { display: inline-block; padding: 0.18em 0.65em; border-radius: 999px; font-size: 0.76rem; font-weight: 600; }
 .pill-published { background: #d8f2e6; color: #0f7a4f; }
 .pill-draft { background: #fde9d4; color: #b85b16; }
+
+.back-link { display: inline-flex; align-items: center; gap: 0.3em; font-size: 0.88rem; color: var(--muted); margin-bottom: 1em; }
+.back-link:hover { color: var(--text); }
+.pill-new { background: #e1ebff; color: #2849a8; }
+.pill-viewed { background: #f1f5f9; color: #475569; }
+.pill-archived { background: #efe6dc; color: #6b4f25; }
