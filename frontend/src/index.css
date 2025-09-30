@@ -195,3 +195,59 @@ h1 { font-size: 2.5rem; }
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ──── Marketplace home ──── */
+.search-cta {
+  display: flex; align-items: center; gap: 0.5em;
+  padding: 0.4em 0.4em 0.4em 1.2em;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  max-width: 620px; width: 100%;
+}
+.search-cta input {
+  flex: 1; border: none; background: transparent;
+  padding: 0.7em 0.5em; font-size: 1rem; color: var(--text);
+}
+.search-cta input:focus { outline: none; }
+.search-cta .btn { border-radius: 999px; }
+.hero-search-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.7em; max-width: 720px; margin: 2em auto 0; }
+.suggested-tags { display: flex; flex-wrap: wrap; gap: 0.5em; font-size: 0.85rem; }
+.suggested-tags a {
+  padding: 0.3em 0.8em; border: 1px solid var(--border); border-radius: 999px;
+  color: var(--muted);
+}
+.suggested-tags a:hover { color: var(--accent); border-color: var(--accent); }
+.trust-strip { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.trust-strip .stat strong { display: block; font-size: 1.8rem; font-weight: 700; }
+.trust-strip .stat span { font-size: 0.85rem; color: var(--muted); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1em; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4em; }
+@media (max-width: 800px) { .grid-4 { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+@media (max-width: 540px) { .grid-4 { grid-template-columns: 1fr; } }
+.category {
+  display: flex; flex-direction: column; gap: 0.6em;
+  padding: 1.3em;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none; color: var(--text);
+}
+.category:hover { border-color: var(--accent); transform: translateY(-2px); }
+.category .cat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(192, 38, 211, 0.1); color: var(--accent);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.principle {
+  padding: 1.4em 1.5em; background: var(--bg-soft); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0;
+}
+.notthat {
+  padding: 1.3em 1.5em; border: 1px dashed var(--border); border-radius: 12px;
+  color: var(--muted);
+}
+.notthat strong { color: var(--text); display: block; margin-bottom: 0.3em; }
+.tagline { color: var(--muted); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1em; }
