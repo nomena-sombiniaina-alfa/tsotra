@@ -251,3 +251,39 @@ h1 { font-size: 2.5rem; }
 }
 .notthat strong { color: var(--text); display: block; margin-bottom: 0.3em; }
 .tagline { color: var(--muted); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1em; }
+
+
+/* ──── Nav dropdowns ──── */
+.nav-link, .nav-trigger {
+  display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.5em 0.85em; border-radius: 10px; background: transparent;
+  color: var(--muted); font-weight: 500; cursor: pointer; border: 0;
+  font-family: inherit; font-size: 0.93rem;
+}
+.nav-link:hover, .nav-trigger:hover, .nav-trigger.is-open { color: var(--text); background: var(--bg-soft); }
+.nav-trigger .caret { transition: transform 0.18s ease; opacity: 0.7; }
+.nav-trigger.is-open .caret { transform: rotate(180deg); opacity: 1; }
+.header-actions { display: flex; align-items: center; gap: 0.5em; margin-left: auto; }
+.nav-menu { position: relative; }
+.nav-panel {
+  position: absolute; top: calc(100% + 8px); z-index: 100;
+  min-width: 260px; padding: 1em;
+  background: var(--bg);
+  border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+}
+.nav-panel.is-wide { min-width: 720px; padding: 1.4em; }
+.nav-panel.align-left { left: 0; }
+.nav-panel.align-right { right: 0; }
+.nav-panel-cols { display: grid; gap: 1.4em; }
+.nav-panel-cols.cols-1 { grid-template-columns: 1fr; }
+.nav-panel-cols.cols-2 { grid-template-columns: 1fr 1fr; }
+.nav-panel-cols.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.nav-col-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6em; }
+.nav-col-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.15em; }
+.nav-col-item { display: block; padding: 0.55em 0.7em; border-radius: 8px; color: var(--text); text-decoration: none; }
+.nav-col-item:hover { background: var(--bg-soft); }
+.nav-col-item-label { font-size: 0.92rem; font-weight: 600; }
+.nav-col-item-hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.15em; }
+.nav-panel-footer { margin-top: 1em; padding-top: 0.9em; border-top: 1px solid var(--border); }
+.nav-footer-link { display: inline-flex; align-items: center; gap: 0.4em; color: var(--primary); font-weight: 600; }
