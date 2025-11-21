@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Application, Offer, OfferReport, Recruiter
+from .models import Application, Offer, OfferReport, Payment, Recruiter
 
 
 @admin.register(Recruiter)
@@ -30,7 +30,7 @@ class OfferAdmin(admin.ModelAdmin):
     list_display = ('title', 'type', 'domain', 'recruiter', 'status',
                     'experience_required', 'report_count', 'created_at')
     list_filter = ('type', 'status', 'mode', 'domain')
-    search_fields = ('title', 'description_short', 'domain', 'location')
+    search_fields = ('title', 'description_full', 'domain', 'location')
     autocomplete_fields = ('recruiter',)
 
 
@@ -45,3 +45,13 @@ class ApplicationAdmin(admin.ModelAdmin):
 class OfferReportAdmin(admin.ModelAdmin):
     list_display = ('offer', 'reporter_email', 'created_at')
     search_fields = ('offer__title', 'reporter_email')
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('offer', 'provider', 'amount_mga', 'msisdn',
+                    'status', 'created_at')
+    list_filter = ('provider', 'status')
+    search_fields = ('internal_reference', 'provider_reference', 'msisdn')
+    readonly_fields = ('internal_reference', 'provider_reference',
+                       'raw_callback', 'created_at', 'updated_at')

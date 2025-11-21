@@ -21,8 +21,17 @@ class RecruiterManager(BaseUserManager):
 
 
 class Recruiter(AbstractBaseUser, PermissionsMixin):
+    """Modèle utilisateur unique (recruteur OU candidat — distingué par `role`)."""
+
+    class Role(models.TextChoices):
+        RECRUITER = 'recruiter', 'Recruteur'
+        CANDIDATE = 'candidate', 'Candidat'
+
     email = models.EmailField(unique=True)
     organization_name = models.CharField(max_length=200, blank=True)
+    role = models.CharField(
+        max_length=20, choices=Role.choices, default=Role.RECRUITER
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -48,6 +57,7 @@ class Offer(models.Model):
 
     class Status(models.TextChoices):
         DRAFT = 'draft', 'Brouillon'
+        PENDING_PAYMENT = 'pending_payment', 'En attente de paiement'
         PUBLISHED = 'published', 'Publié'
         CLOSED = 'closed', 'Fermé'
         REMOVED = 'removed', 'Retiré'
@@ -58,7 +68,6 @@ class Offer(models.Model):
     title = models.CharField(max_length=200)
     type = models.CharField(max_length=20, choices=Type.choices, default=Type.INTERNSHIP)
     domain = models.CharField(max_length=120)
-    description_short = models.CharField(max_length=300)
     description_full = models.TextField(blank=True)
     tasks = models.TextField(blank=True)
     requirements = models.TextField(blank=True)
@@ -67,7 +76,6 @@ class Offer(models.Model):
     duration = models.CharField(max_length=120, blank=True)
     location = models.CharField(max_length=200, blank=True)
     mode = models.CharField(max_length=20, choices=Mode.choices, default=Mode.ONSITE)
-    contact_method = models.CharField(max_length=255, blank=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
     report_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -112,6 +120,47 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.email} → {self.offer_id}"
+
+
+class Payment(models.Model):
+    """Paiement Mobile Money exigé pour publier une offre."""
+
+    class Provider(models.TextChoices):
+        MVOLA = 'mvola', 'MVola'
+        ORANGE = 'orange', 'Orange Money'
+        AIRTEL = 'airtel', 'Airtel Money'
+
+    class Status(models.TextChoices):
+        PENDING = 'pending', 'En attente'
+        SUCCESS = 'success', 'Réussi'
+        FAILED = 'failed', 'Échoué'
+        EXPIRED = 'expired', 'Expiré'
+
+    offer = models.OneToOneField(
+        Offer, on_delete=models.CASCADE, related_name='payment'
+    )
+    provider = models.CharField(max_length=20, choices=Provider.choices)
+    amount_mga = models.PositiveIntegerField()
+    msisdn = models.CharField(max_length=20)
+    internal_reference = models.CharField(max_length=64, unique=True)
+    provider_reference = models.CharField(max_length=128, blank=True)
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.PENDING
+    )
+    failure_reason = models.CharField(max_length=255, blank=True)
+    raw_callback = models.JSONField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['provider', 'provider_reference']),
+            models.Index(fields=['status', 'created_at']),
+        ]
+
+    def __str__(self):
+        return f"{self.provider} {self.amount_mga} MGA — {self.status}"
 
 
 class OfferReport(models.Model):
