@@ -143,3 +143,40 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='no-reply@tsotra.local
 TSOTRA_APPLICATION_RATE_LIMIT_PER_OFFER_HOURS = 24
 TSOTRA_APPLICATION_GLOBAL_LIMIT = 5
 TSOTRA_APPLICATION_GLOBAL_WINDOW_HOURS = 24
+
+
+# -----------------------------------------------------------------------------
+# Mobile Money — publication payante d'une offre
+# -----------------------------------------------------------------------------
+TSOTRA_OFFER_PRICE_MGA = config('TSOTRA_OFFER_PRICE_MGA', default=10000, cast=int)
+TSOTRA_PAYMENT_BASE_URL = config(
+    'TSOTRA_PAYMENT_BASE_URL', default='http://127.0.0.1:8000'
+)
+# Secret partagé pour valider les webhooks en sandbox (entête X-Tsotra-Secret).
+TSOTRA_PAYMENT_WEBHOOK_SECRET = config(
+    'TSOTRA_PAYMENT_WEBHOOK_SECRET', default='change-me-in-prod'
+)
+
+TSOTRA_MVOLA = {
+    'BASE_URL': config('MVOLA_BASE_URL', default='https://devapi.mvola.mg'),
+    'CONSUMER_KEY': config('MVOLA_CONSUMER_KEY', default=''),
+    'CONSUMER_SECRET': config('MVOLA_CONSUMER_SECRET', default=''),
+    'PARTNER_MSISDN': config('MVOLA_PARTNER_MSISDN', default='0343500003'),
+    'PARTNER_NAME': config('MVOLA_PARTNER_NAME', default='tsotra'),
+}
+
+TSOTRA_ORANGE = {
+    'BASE_URL': config('ORANGE_BASE_URL', default='https://api.orange.com'),
+    'AUTH_HEADER': config('ORANGE_AUTH_HEADER', default=''),  # ex: "Basic xxxxxx"
+    'MERCHANT_KEY': config('ORANGE_MERCHANT_KEY', default=''),
+    'RETURN_URL': config('ORANGE_RETURN_URL', default='http://localhost:5173/payment/success'),
+    'CANCEL_URL': config('ORANGE_CANCEL_URL', default='http://localhost:5173/payment/cancel'),
+}
+
+TSOTRA_AIRTEL = {
+    'BASE_URL': config('AIRTEL_BASE_URL', default='https://openapiuat.airtel.africa'),
+    'CLIENT_ID': config('AIRTEL_CLIENT_ID', default=''),
+    'CLIENT_SECRET': config('AIRTEL_CLIENT_SECRET', default=''),
+    'COUNTRY': config('AIRTEL_COUNTRY', default='MG'),
+    'CURRENCY': config('AIRTEL_CURRENCY', default='MGA'),
+}
