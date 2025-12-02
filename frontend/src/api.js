@@ -62,6 +62,7 @@ export const api = {
 
   // auth
   register: (payload) => client.post('/auth/register/', payload),
+  registerCandidate: (payload) => client.post('/auth/register-candidate/', payload),
   login: (payload) => client.post('/auth/login/', payload),
   me: () => client.get('/me/'),
 
@@ -73,6 +74,12 @@ export const api = {
   myOfferApplications: (id) => client.get(`/me/offers/${id}/applications/`),
   setApplicationStatus: (id, status) =>
     client.patch(`/applications/${id}/`, { status }),
+
+  // payments (mobile money)
+  payOffer: (id, payload) => client.post(`/me/offers/${id}/pay/`, payload),
+  simulatePayment: (paymentId, success) =>
+    client.post(`/payments/${paymentId}/simulate/`, { success }),
+  myOffer: (id) => client.get(`/me/offers/${id}/`),
 }
 
 export function flatErrors(err) {
