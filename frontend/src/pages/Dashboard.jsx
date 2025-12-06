@@ -16,7 +16,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="container dash-grid">
+    <div className="container dash-grid dashboard-page">
       <aside className="dash-aside">
         <div className="card" style={{ padding: '1.2em' }}>
           <strong style={{ color: 'var(--text)' }}>
@@ -57,7 +57,11 @@ export default function Dashboard() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1em', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: 240 }}>
                     <span className={`pill pill-${o.status === 'published' ? 'published' : 'draft'}`}>
-                      {o.status === 'published' ? 'En ligne' : 'Brouillon'}
+                      {o.status === 'published'
+                        ? 'En ligne'
+                        : o.status === 'pending_payment'
+                          ? 'Paiement en attente'
+                          : 'Brouillon'}
                     </span>
                     <h3 style={{ marginTop: '0.5em', marginBottom: '0.2em', color: 'var(--text)' }}>
                       {o.title}
@@ -68,8 +72,13 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.5em', flexWrap: 'wrap' }}>
+                    {o.status !== 'published' && (
+                      <Link to={`/dashboard/offers/${o.id}/pay`} className="btn btn-primary btn-sm">
+                        Payer & publier
+                      </Link>
+                    )}
                     <Link to={`/offers/${o.id}`} className="btn btn-ghost btn-sm">Voir l'annonce</Link>
-                    <Link to={`/dashboard/offers/${o.id}/applications`} className="btn btn-primary btn-sm">
+                    <Link to={`/dashboard/offers/${o.id}/applications`} className="btn btn-ghost btn-sm">
                       Candidatures
                     </Link>
                   </div>

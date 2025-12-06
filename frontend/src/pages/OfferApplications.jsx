@@ -23,7 +23,7 @@ export default function OfferApplications() {
   }
 
   return (
-    <section className="section">
+    <section className="section dashboard-page">
       <div className="container">
         <Link to="/dashboard" className="back-link">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
