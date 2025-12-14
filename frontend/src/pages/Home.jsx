@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api.js'
 
+function summarize(text, max = 220) {
+  if (!text) return ''
+  const cleaned = text.replace(/\s+/g, ' ').trim()
+  return cleaned.length <= max ? cleaned : cleaned.slice(0, max - 1).trimEnd() + '…'
+}
+
 export default function Home() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
@@ -138,7 +144,7 @@ export default function Home() {
                   <div className="org">
                     {o.organization_name || 'Organisation'} · {o.location || 'Lieu non précisé'}
                   </div>
-                  <p className="summary">{o.description_short}</p>
+                  <p className="summary">{summarize(o.description_full)}</p>
                   <span className="arrow">
                     Voir la mission
                     <ArrowRight />
