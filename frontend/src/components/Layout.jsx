@@ -121,9 +121,6 @@ export default function Layout() {
               </ul>
             </div>
           </div>
-          <div className="legal">
-            © {new Date().getFullYear()} tsotra · Uniquement non rémunéré · Transparence des missions
-          </div>
         </div>
       </footer>
     </>
