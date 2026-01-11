@@ -115,7 +115,7 @@
   --radius-xl: 24px;
 
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1097,4 +1097,179 @@ button, input, select, textarea { font: inherit; color: inherit; }
   height: 1px;
   background: var(--color-border);
   margin: 2em 0;
+}
+
+.link-back {
+  display: inline-block;
+  margin-bottom: 1em;
+  font-size: 0.9rem;
+  color: var(--color-foreground-muted);
+  text-decoration: none;
+}
+.link-back:hover { color: var(--color-foreground); text-decoration: underline; }
+
+@keyframes tsotra-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─────── Pagination ─────── */
+.pagination {
+  margin-top: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+.pagination-summary {
+  color: var(--color-foreground-muted);
+  font-size: 0.9rem;
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  flex-wrap: wrap;
+}
+.pagination-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.7em;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.pagination-btn:hover:not(:disabled):not(.active) {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+}
+.pagination-btn.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-primary);
+  cursor: default;
+}
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pagination-gap {
+  padding: 0 0.4em;
+  color: var(--color-foreground-muted);
+  user-select: none;
+}
+
+/* ─────── Toast ─────── */
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  max-width: 360px;
+  padding: 0.85em 1.1em;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.92rem;
+  font-weight: 500;
+  animation: toast-in 0.25s ease-out;
+}
+.toast-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+}
+.toast-error {
+  background: var(--color-destructive-bg);
+  color: var(--color-destructive);
+  border: 1px solid var(--color-destructive);
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  .toast {
+    top: 12px; right: 12px; left: 12px;
+    max-width: none;
+  }
+}
+
+/* ─────── Pages du dashboard recruteur ─────── */
+/* Espacements latéraux supplémentaires (en plus des 1.5cm du .container).
+   Sur grand écran on respire vraiment ; sur mobile on revient à 0 pour ne
+   pas étouffer le contenu. */
+.dashboard-page {
+  padding-left: 1.5cm;
+  padding-right: 1.5cm;
+}
+@media (max-width: 800px) {
+  .dashboard-page { padding-left: 0; padding-right: 0; }
+}
+
+/* ─────── Checkbox inline ─────── */
+.field .checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-foreground-soft);
+}
+.field .checkbox-row input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+/* ─────── Formulaire 2 colonnes (Publier une mission) ─────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.4em;       /* colonnes espacées, lignes gérées par .field */
+}
+.form-grid .field-full { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* ─────── Page "Publier une mission" — version compacte ─────── */
+/* Objectif : tenir au-dessus de la ligne de flottaison sur ≥ 720 px de
+   hauteur (et a fortiori sur 1080p), sans dégrader la lisibilité mobile. */
+.publish-page.section { padding: var(--space-5) 0 var(--space-3); }
+.publish-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  margin: 0 0 0.8em;
+  flex-wrap: wrap;
+}
+.publish-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.7rem;
+  margin: 0;
+}
+.publish-page .form-grid .field { margin-bottom: 0.7em; }
+.publish-page .form-grid textarea { min-height: 110px; }
+
+@media (min-height: 720px) and (min-width: 800px) {
+  /* Sur grand écran on tasse encore un peu pour éviter le scroll. */
+  .publish-page.section { padding: var(--space-4) 0 var(--space-2); }
+  .publish-title { font-size: 1.6rem; margin-bottom: 0.6em; }
+  .publish-page .form-grid .field { margin-bottom: 0.55em; }
+  .publish-page .form-grid textarea { min-height: 95px; }
+  .publish-page .field label { font-size: 0.88rem; margin-bottom: 0.15em; }
+  .publish-page .field input,
+  .publish-page .field select,
+  .publish-page .field textarea {
+    padding: 0.5em 0.75em;
+  }
 }
