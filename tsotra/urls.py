@@ -23,7 +23,7 @@ def root(_request):
 urlpatterns = [
     path('', root),
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path('api/', include('gestion.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,5 @@
 """
-Django settings for tsotra_backend project.
+Django settings for the tsotra project.
 
 Plateforme tsotra — stages non rémunérés et volontariat structuré.
 """
@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
 
-    'api',
+    'gestion',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'tsotra_backend.urls'
+ROOT_URLCONF = 'tsotra.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tsotra_backend.wsgi.application'
+WSGI_APPLICATION = 'tsotra.wsgi.application'
 
 
 DATABASES = {
@@ -77,7 +77,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'api.Recruiter'
+AUTH_USER_MODEL = 'gestion.Recruiter'
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
